@@ -64,6 +64,9 @@ namespace cereal
   class BinaryOutputArchive;
   class BinaryInputArchive;
 
+  class BytesOutputArchive;
+  class BytesInputArchive;
+
   // ######################################################################
   namespace detail
   {
@@ -174,7 +177,9 @@ namespace cereal
   template<class Archive, class T> inline
   typename
   std::enable_if<std::is_same<Archive, ::cereal::BinaryInputArchive>::value ||
-                 std::is_same<Archive, ::cereal::BinaryOutputArchive>::value,
+                 std::is_same<Archive, ::cereal::BinaryOutputArchive>::value ||
+                 std::is_same<Archive, ::cereal::BytesInputArchive>::value ||
+                 std::is_same<Archive, ::cereal::BytesOutputArchive>::value,
   T && >::type
   make_nvp( const char *, T && value )
   {
@@ -187,7 +192,9 @@ namespace cereal
   template<class Archive, class T> inline
   typename
   std::enable_if<!std::is_same<Archive, ::cereal::BinaryInputArchive>::value &&
-                 !std::is_same<Archive, ::cereal::BinaryOutputArchive>::value,
+                 !std::is_same<Archive, ::cereal::BinaryOutputArchive>::value &&
+                 !std::is_same<Archive, ::cereal::BytesInputArchive>::value &&
+                 !std::is_same<Archive, ::cereal::BytesOutputArchive>::value,
   NameValuePair<T> >::type
   make_nvp( const char * name, T && value)
   {
